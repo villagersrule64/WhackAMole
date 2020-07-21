@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class GameOver : MonoBehaviour
 {
     [SerializeField]
-    Text scoreText;
+    TextMeshProUGUI scoreText;
 
     private void Start()
     {
