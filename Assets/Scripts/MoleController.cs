@@ -3,17 +3,26 @@ using UnityEngine;
 
 public class MoleController : MonoBehaviour
 {
-    private GameController _gameController;
+    [SerializeField]
+    private float _minDelay = 1;
+    [SerializeField]
+    private float _maxDelay = 6;
+    [SerializeField]
+    private int _timesToClick = 1;
+    [SerializeField]
+    private int _scoreAmount = 1;
+
+    private int _timesClicked = 0;
+
     void Start()
     {
-        _gameController = FindObjectOfType<GameController>();
         StartCoroutine(WillMove());
     }
 
     private IEnumerator WillMove()
     {
         var animator = GetComponent<Animator>();
-        int delay = Random.Range(1, 6);
+        float delay = Random.Range(_minDelay, _maxDelay);
         float untilDown = Random.Range(0.3f, 0.8f);
 
         while (true)
@@ -29,8 +38,14 @@ public class MoleController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        _gameController.ChangeScore(1);
         var anim = GetComponent<Animator>();
-        anim.SetTrigger("Clicked");
+        _timesClicked++;
+
+        if (_timesClicked >= _timesToClick)
+        {
+            GameManager.ChangeScore(_scoreAmount);
+            anim.SetTrigger("Clicked");
+            _timesClicked = 0;
+        }
     }
 }
